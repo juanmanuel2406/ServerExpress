@@ -12,4 +12,9 @@ categoriaRouter.post('/', (req, res) => {
     res.end(JSON.stringify(body))
 })
 
+categoriaRrouter.get('/', (req, res) =>{
+    const categorias = Object.keys(productos, productos.infoProductos)
+    res.end(JSON.stringify(categorias))
+})
+
 module.exports = categoriaRouter
