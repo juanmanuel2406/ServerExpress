@@ -5,9 +5,12 @@ const productosRouter = require('./producto.router.js')
 const categoriaRouter = express.Router()
 
 categoriaRouter.post('/', (req, res) => {
-    const categoria = req.params.categoria
     const body = req.body
-    productos.infoProductos[categoria].push(body)
+    const categoria = productos.infoProductos
+    productos.infoProductos = {
+        ...categorias,
+        ...body
+    }
     res.statusCode = 201
     res.end(JSON.stringify(body))
 })
