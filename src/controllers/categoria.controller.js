@@ -3,25 +3,25 @@ const serviceCategoria = require('../services/categoria.service')
 
 const serviceCategorias = new serviceCategoria()
 
-function getCategoria(req, res){
+function getCategoria(req, res, next){
     try {
         const categorias = serviceCategorias.get(req, res)
         res.json(categorias)
     }
     catch(error){
-        res.status(500).json({ message: message.error })
+        next(error)
     }
     
 }
 
-function postCategoria(req, res){
+function postCategoria(req, res, next){
     try {
         const body = req.body
         const resultado = serviceCategorias.post(body)
         res.statusCode = (201).json(resultad)
     }
     catch(error) {
-        res.status(500).json({ message: message.error })
+        next(error)
     }
      
 }
