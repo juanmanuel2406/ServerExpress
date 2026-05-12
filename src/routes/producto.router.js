@@ -13,10 +13,10 @@ exports.productosRouter = productosRouter
 productosRouter.get('/', getProducto)
 
 productosRouter.get('/:categoria', 
-    validator(paramCategoriaSchema, 'params'), 
+    //validator(paramCategoriaSchema, 'params'), 
     getProductoPorCategoria)
 
-productosRouter.post('/:categoria', 
+productosRouter.post('/', 
     validator(postProductosSchema, 'body'), 
     validator(paramCategoriaSchema, 'params'), 
     postProducto)

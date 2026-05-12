@@ -13,16 +13,12 @@ const precio = joi.number().min(100).messages({
     'any.requiered': 'El precio es obligatorio',
     'number.min': 'El precio debe ser igual o mayor a {#limit}'
 })
-const categoria = joi.string().min(3).max(15).messages({
-    'any.requiered': 'La categoria es obligatorio',
-    'string.min': 'la categoria debe ser igual o mayor a {#limit} caracteres',
-    'string.max': 'la categoria debe ser como maximo {#limit} caracteres'
-})
+const categoria = joi.number().required()
 
 const postProductosSchema = joi.object({
-    id: id.required(),
     descripcion: descripcion.required(),
-    precio: precio.required()
+    precio: precio.required(),
+    categoria
 })
 
 const paramCategoriaSchema = joi.object({
