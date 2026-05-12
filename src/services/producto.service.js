@@ -1,31 +1,54 @@
-const { get } = require('express/lib/response')
-const productos = require('../data/productos')
-const { productosRouter, post } = require('../routes/producto.router')
-const { getProductoPorCategoria } = require('../controllers/producto.controller')
+const { query } = require('express')
+const { pool } = require('../db/connection')
+const res = require('express/lib/response')
+const { ref } = require('joi')
 
 class ProductoService{
-    constructor() {
-        this.productos = productos.infoProductos
+    
+    async get() {
+        const sql = `SELECT pro_id id,
+                    pro_descripcion as descripcion,
+                    pro_precio as precio,
+                    cat_descripcion as categoria
+                    FROM productos
+                    INNER JOIN categoria ON cat_id = pro_id_categoria`
+        const [rows] = await pool.query(sql)
+        return rows
     }
 
-    get() {
-        return productos.infoProductos
-    }
+    async getProductoPorCategoria(categoria){
 
-    getProductoPorCategoria(categoria){
-        const productosCategoria = productos.infoProductos[categoria]
-        if(productosCategoria){
-            return productosCategoria
-        } else {
+        const sql = `SELECT pro_id id,
+                    pro_descripcion as descripcion,
+                    pro_precio as precio,
+                    cat_descripcion as categoria
+                    FROM productos
+                    INNER JOIN categoria ON cat_id = pro_id_categoria
+                    where cat_id = ?`
+        const [rows] = await pool.query(sql, [categoria])
+
+        if(rows.length === 0){
             const error = new Error(`el Categoria ${categoria} no existe`)
             error.status = 404
             throw error
-        }
+        } 
+        return rows
     }
 
-    post(categoria, producto){
-        productos.infoProductos[categoria].push(producto)
-        return producto
+    async post(producto){
+        const sql = `insert into productos (pro_descripcion, 
+        pro_precio, 
+        pro_categoria) 
+        values (?, ?, ?)`
+        const [result] = await pool.query(sql, [producto.descripcion, 
+            producto.precio, 
+            producto.categoria])
+        return {
+            id: result.insertId,
+            descripcion: producto.descripcion,
+            precio: producto.precio,
+            categoria: producto.categoria
+        }
     }
 
 

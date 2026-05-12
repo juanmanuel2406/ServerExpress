@@ -4,30 +4,30 @@ const productos = require('../data/productos')
 
 const serviceProducto = new ProductoService()
 
-function getProducto(req, res, next){
+async function getProducto(req, res, next){
     try {
-        const productos = serviceProducto.get()
+        const productos = await serviceProducto.get()
         res.json(productos)
     } catch (error){
        next(error)
     }
 }
 
-function getProductoPorCategoria(req, res, next){
+async function getProductoPorCategoria(req, res, next){
    try {
         const categoria = req.params.categoria
-        const productos = serviceProducto.getProductoPorCategoria(categoria)
+        const productos = await serviceProducto.getProductoPorCategoria(categoria)
         res.json(productos)
     }catch (error){
         next(error)
     }
 }
 
-function postProducto(req, res, next){
+async function postProducto(req, res, next){
     try {
         const categoria = req.params.categoria
         const producto = req.body
-        const productoNuevo = serviceProducto.post(categoria, producto)
+        const productoNuevo = await serviceProducto.post(producto)
         res.status(201).json(productoNuevo)
     } catch (error){
         next(error)
