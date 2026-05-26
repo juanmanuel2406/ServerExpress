@@ -1,29 +1,26 @@
-const { get } = require('express/lib/response')
-const serviceCategoria = require('../services/categoria.service')
+const CategoriaServices = require('../services/categoria.service')
 
-const serviceCategorias = new serviceCategoria()
+const serviceCategorias = new CategoriaServices()
 
-function getCategoria(req, res, next){
+async function getCategoria(req, res, next){
     try {
-        const categorias = serviceCategorias.get(req, res)
+        const categorias = await serviceCategorias.get()
         res.json(categorias)
     }
     catch(error){
         next(error)
     }
-    
 }
 
-function postCategoria(req, res, next){
+async function postCategoria(req, res, next){
     try {
-        const body = req.body
-        const resultado = serviceCategorias.post(body)
-        res.statusCode = (201).json(resultad)
+        const categoria = req.body
+        const resultado = await serviceCategorias.post(categoria)
+        res.status(201).json(resultado)
     }
     catch(error) {
         next(error)
     }
-     
 }
 
 module.exports = {

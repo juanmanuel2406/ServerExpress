@@ -1,6 +1,4 @@
-const { get } = require('express/lib/response')
 const ProductoService = require('../services/producto.service')
-const productos = require('../data/productos')
 
 const serviceProducto = new ProductoService()
 
