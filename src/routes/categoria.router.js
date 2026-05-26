@@ -1,10 +1,9 @@
-//Rutas de Categoria
-const { getCategoria, postCategoria} = require('../controllers/categoria.controller.js')
+const { getCategoria, postCategoria } = require('../controllers/categoria.controller')
 const express = require('express')
 
-const categoriaRouter = express.Router()
+const categoriasRouter = express.Router()
 
-categoriaRouter.post('/', postCategoria)
-categoriaRouter.get('/', getCategoria)
+categoriasRouter.post('/', postCategoria)
+categoriasRouter.get('/', getCategoria)
 
-module.exports = categoriaRouter
+module.exports = categoriasRouter

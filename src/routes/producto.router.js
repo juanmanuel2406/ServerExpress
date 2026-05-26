@@ -1,23 +1,22 @@
 const express = require('express')
-const { 
+const {
     getProducto,
     getProductoPorCategoria,
     postProducto
-} = require('../controllers/producto.controller')
-const { postProductosSchema, paramCategoriaSchema } = require('../schemas/producto.schema')
-const { validator } = require('../middlewares/validatorHandler')
+ } = require('../controllers/producto.controller')
+ const { 
+    postProductoSchema, 
+    paramCategoriaSchema } = require('../schemas/producto.schema')
+ const { validator } = require('../middlewares/validatorHandler')
+
 
 const productosRouter = express.Router()
-exports.productosRouter = productosRouter
-
 productosRouter.get('/', getProducto)
-
-productosRouter.get('/:categoria', 
-    //validator(paramCategoriaSchema, 'params'), 
+productosRouter.get('/:categoria',
+    validator(paramCategoriaSchema, 'params'), 
     getProductoPorCategoria)
-
-productosRouter.post('/', 
-    validator(postProductosSchema, 'body'), 
+productosRouter.post('/',  
+    validator(postProductoSchema, 'body'), 
     postProducto)
 
 module.exports = productosRouter

@@ -1,29 +1,28 @@
-const CategoriaServices = require('../services/categoria.service')
+const CategoriaService = require('../services/categoria.service')
 
-const serviceCategorias = new CategoriaServices()
+const serviceCategoria = new CategoriaService()
 
-async function getCategoria(req, res, next){
+function getCategoria(req, res, next){
     try {
-        const categorias = await serviceCategorias.get()
+        const categorias = serviceCategoria.get(req, res)
         res.json(categorias)
     }
-    catch(error){
-        next(error)
+    catch(error) {
+        next(error) 
     }
 }
 
-async function postCategoria(req, res, next){
+function postCategoria(req, res, next){
     try {
-        const categoria = req.body
-        const resultado = await serviceCategorias.post(categoria)
-        res.status(201).json(resultado)
-    }
-    catch(error) {
-        next(error)
+        const body = req.body
+        const resultado = serviceCategoria.post(body)
+        res.status(201).json(resultado)       
+    } catch (error) {
+        next(error)        
     }
 }
 
 module.exports = {
     getCategoria,
-    postCategoria
+    postCategoria,
 }
