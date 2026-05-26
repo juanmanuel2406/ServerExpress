@@ -18,7 +18,6 @@ productosRouter.get('/:categoria',
 
 productosRouter.post('/', 
     validator(postProductosSchema, 'body'), 
-    validator(paramCategoriaSchema, 'params'), 
     postProducto)
 
 module.exports = productosRouter

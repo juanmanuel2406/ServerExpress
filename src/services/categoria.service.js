@@ -1,23 +1,22 @@
-const res = require('express/lib/response')
-const productos = require('../data/productos')
+const mockCategorias = [
+    { id: 1, descripcion: 'Electronica' },
+    { id: 2, descripcion: 'Alimentos' },
+    { id: 3, descripcion: 'Ropa' }
+]
 
 class CategoriaServices{
-    constructor(){
-        this.productos = productos.infoProductos
+
+    async get() {
+        return mockCategorias
     }
 
-    get(){
-        const categorias = Object.keys(productos.infoProductos)
-        return categorias
-    }
-
-    post(listaProductos){
-       const categorias = productos.infoProductos
-        productos.infoProductos = {
-            ...categorias,
-            ...listaProductos
+    async post(categoria){
+        const nueva = {
+            id: mockCategorias.length + 1,
+            descripcion: categoria.descripcion
         }
-        return listaProductos
+        mockCategorias.push(nueva)
+        return nueva
     }
 }
 
