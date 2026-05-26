@@ -2,9 +2,9 @@ const CategoriaService = require('../services/categoria.service')
 
 const serviceCategoria = new CategoriaService()
 
-function getCategoria(req, res, next){
+async function getCategoria(req, res, next){
     try {
-        const categorias = serviceCategoria.get(req, res)
+        const categorias = await serviceCategoria.get(req, res)
         res.json(categorias)
     }
     catch(error) {
@@ -12,11 +12,31 @@ function getCategoria(req, res, next){
     }
 }
 
-function postCategoria(req, res, next){
+async function postCategoria(req, res, next){
     try {
-        const body = req.body
-        const resultado = serviceCategoria.post(body)
+        const categoria = req.body
+        const resultado = await serviceCategoria.post(categoria)
         res.status(201).json(resultado)       
+    } catch (error) {
+        next(error)        
+    }
+}
+
+async function updateCategoria(req, res, next){
+    try {
+        const categoria = req.body
+        const resultado = await serviceCategoria.update(categoria)
+        res.status(200).json(resultado)       
+    } catch (error) {
+        next(error)        
+    }
+}
+
+async function deleteCategoria(req, res, next){
+    try {
+        const id = req.params.id
+        const resultado = await serviceCategoria.delete(id)
+        res.status(200).json(resultado)       
     } catch (error) {
         next(error)        
     }
@@ -25,4 +45,6 @@ function postCategoria(req, res, next){
 module.exports = {
     getCategoria,
     postCategoria,
+    deleteCategoria,
+    updateCategoria,
 }
