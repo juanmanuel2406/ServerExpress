@@ -1,49 +1,54 @@
-const mockProductos = [
-    { id: 1, descripcion: 'Celular', precio: 1500, categoria: 'Electronica' },
-    { id: 2, descripcion: 'Notebook', precio: 3000, categoria: 'Electronica' },
-    { id: 3, descripcion: 'Camiseta', precio: 500, categoria: 'Ropa' }
-]
+const { pool } = require('../db/connection')
 
-class ProductoService{
+class ProductoService {
     async get() {
-        return mockProductos
+        const sql =
+            `SELECT pro_id id, 
+                    pro_descripcion descripcion, 
+                    pro_precio precio, 
+                    cat_descripcion categoria 
+            FROM producto 
+                INNER JOIN categoria ON cat_id = pro_id_categoria`
+        const [rows] = await pool.query(sql)
+        return rows
     }
 
-    async getProductoPorCategoria(categoriaId){
-        const categorias = { 1: 'Electronica', 2: 'Alimentos', 3: 'Ropa' }
-        const categoriaNombre = categorias[categoriaId]
-        
-        if (!categoriaNombre) {
-            const error = new Error(`la Categoria ${categoriaId} no existe`)
+    async getProductoPorCategoria(categoria) {
+        const sql =
+            `SELECT pro_id id, 
+                    pro_descripcion descripcion, 
+                    pro_precio precio, 
+                    cat_descripcion categoria 
+            FROM producto 
+                INNER JOIN categoria ON cat_id = pro_id_categoria
+            WHERE cat_id = ?`
+        const [rows] = await pool.query(sql, [categoria])
+
+        if (rows.length === 0){
+            const error = new Error(`La categoria ${categoria} no existe`)
             error.status = 404
             throw error
         }
-
-        const filtrados = mockProductos.filter(p => {
-            if (categoriaId === '1') return p.categoria === 'Electronica'
-            if (categoriaId === '2') return p.categoria === 'Alimentos'
-            if (categoriaId === '3') return p.categoria === 'Ropa'
-            return false
-        })
-        
-        if (filtrados.length === 0) {
-            const error = new Error(`no hay productos en la categoria ${categoriaId}`)
-            error.status = 404
-            throw error
-        }
-        return filtrados
+        return rows        
     }
 
-    async post(producto){
-        const categorias = { 1: 'Electronica', 2: 'Alimentos', 3: 'Ropa' }
-        const nuevo = {
-            id: mockProductos.length + 1,
+    async post(producto) {
+        const sql =
+            `INSERT INTO producto(pro_descripcion, pro_precio, pro_id_categoria)
+            VALUES(?, ?, ?)`
+        
+        const [result] = await pool.query(sql, [
+            producto.descripcion,
+            producto.precio,
+            producto.categoria
+        ])
+
+        return {
+            id: result.insertId,
             descripcion: producto.descripcion,
             precio: producto.precio,
-            categoria: categorias[producto.categoria] || 'Sin categoria'
+            categoria: producto.categoria
         }
-        mockProductos.push(nuevo)
-        return nuevo
     }
 }
 
