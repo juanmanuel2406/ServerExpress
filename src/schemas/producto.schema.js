@@ -15,10 +15,13 @@ const precio = joi.number().min(100).messages({
 })
 const categoria = joi.number().required()
 
+const idUsuario = joi.number()
+
 const postProductoSchema = joi.object({
     descripcion: descripcion.required(),
     precio: precio.required(),
-    categoria: categoria
+    categoria: categoria,
+    idUsuario: idUsuario.required()
 })
 
 const paramCategoriaSchema = joi.object({
