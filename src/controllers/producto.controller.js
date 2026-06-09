@@ -1,4 +1,5 @@
 const ProductoService = require('../services/producto.service')
+const { postCategoria } = require('./categoria.controller')
 
 const serviceProducto = new ProductoService()
 

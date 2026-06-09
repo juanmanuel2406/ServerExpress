@@ -1,24 +1,20 @@
 {
   "name": "servidorexpress",
   "version": "1.0.0",
-  "description": "Servidor Desarrolado con node + Express",
-  "license": "ISC",
-  "author": "Juan Manuel Faria",
-  "type": "commonjs",
+  "description": "Servidor desarrollado con node + express",
   "main": "index.js",
   "scripts": {
     "dev": "nodemon src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "author": "Jonatan DE LA CRUZ",
+  "license": "ISC",
   "dependencies": {
+    "bcrypt": "^6.0.0",
     "dotenv": "^17.4.2",
     "express": "^4.22.1",
-    "bcrypt": "^6.0.0",
     "joi": "^18.2.1",
     "jsonwebtoken": "^9.0.3",
     "mysql2": "^3.22.3"
-  },
-  "devDependencies": {
-    "nodemon": "^3.1.14"
   }
 }
