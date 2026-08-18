@@ -10,6 +10,7 @@ services:
       - DB_DATABASE=dbserverexpress26
       - DB_USER=root
       - DB_PASSWORD=root
+      - JWT_SECRET=clave_secreta_server_express_26
     depends_on:
       mysql:
         condition: service_healthy
