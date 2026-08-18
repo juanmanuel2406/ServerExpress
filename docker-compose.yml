@@ -24,6 +24,7 @@ services:
       - MYSQL_DATABASE=dbserverexpress26
     volumes:
       - mysql_data:/var/lib/mysql
+      - ./src/sql:/docker-entrypoint-initdb.d
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       interval: 5s
