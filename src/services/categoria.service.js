@@ -32,8 +32,8 @@ class CategoriaService {
                             cat_fechamodif = CURRENT_TIMESTAMP(),
                             cat_descripcion = ?
                       WHERE cat_id = ?`
-        await pool.query(sql, [categoria.descripcion, 
-            categoria.idUsuario, 
+        await pool.query(sql, [categoria.idUsuario, 
+            categoria.descripcion, 
             categoria.id])
         return categoria
     }
