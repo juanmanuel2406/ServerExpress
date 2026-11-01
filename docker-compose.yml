@@ -1,4 +1,23 @@
 services:
+  # Base de datos MySQL. Al crearse por primera vez ejecuta el script de src/sql
+  mysql:
+    image: mysql:5.7
+    ports:
+      - "3307:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=dbserverexpress26
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./src/sql:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+  # Backend ServerExpress. Espera a que MySQL esté listo
   app:
     build: .
     ports:
@@ -16,21 +35,13 @@ services:
         condition: service_healthy
     restart: unless-stopped
 
-  mysql:
-    image: mysql:5.7
+  # Front React (ProyectoIntegradorTLP3) servido con nginx en http://localhost:8080
+  front:
+    build: ../../ProyectoIntegradorTLP3
     ports:
-      - "3307:3306"
-    environment:
-      - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_DATABASE=dbserverexpress26
-    volumes:
-      - mysql_data:/var/lib/mysql
-      - ./src/sql:/docker-entrypoint-initdb.d
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      interval: 5s
-      timeout: 5s
-      retries: 10
+      - "8080:80"
+    depends_on:
+      - app
     restart: unless-stopped
 
 volumes:
